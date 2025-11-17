@@ -11,6 +11,10 @@ from time import sleep
 
 from cachetools import LRUCache
 import numpy as np
+import memalot
+
+# Start leak monitoring with max_object_lifetime of 4.0 seconds
+memalot.start_leak_monitoring(max_object_lifetime=4.0)
 
 class DataHolder:
     def __init__(self, data: np.ndarray):
@@ -18,7 +22,7 @@ class DataHolder:
 
     def __len__(self):
         # Return the actual size in bytes for proper cache sizing
-        return len(self._data)
+        return self._data.nbytes
 
     def __hash__(self):
         return hash(self._data.tobytes())
