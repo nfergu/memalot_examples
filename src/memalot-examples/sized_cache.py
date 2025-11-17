@@ -16,13 +16,15 @@ from memalot.api import start_leak_monitoring
 class DataHolder:
     def __init__(self, data: np.ndarray):
         self._data = data
+        # Cache the hash value to avoid creating new bytes objects on each hash call
+        self._hash = hash(data.tobytes())
 
     def __len__(self):
         # Return the actual size in bytes for proper cache sizing
-        return len(self._data)
+        return self._data.nbytes
 
     def __hash__(self):
-        return hash(self._data.tobytes())
+        return self._hash
 
 def create_data(key: int, cache: LRUCache):
     # Create a random numpy array of size 4906 bytes and store it in the cache
