@@ -7,13 +7,15 @@ from memalot import api
 class DataHolder:
     def __init__(self, data: np.ndarray):
         self._data = data
+        # Cache the hash value to avoid recreating bytes objects
+        self._hash = hash(data.tobytes())
 
     def __len__(self):
         # Return the actual size in bytes for proper cache sizing
         return self._data.nbytes
 
     def __hash__(self):
-        return hash(self._data.tobytes())
+        return self._hash
 
 def create_data(key: int, cache: LRUCache):
     # Create array with 625 float64 values = 625 * 8 bytes = 5000 bytes
