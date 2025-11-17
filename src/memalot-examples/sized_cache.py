@@ -9,7 +9,7 @@ class DataHolder:
 
     def __len__(self):
         # Return the actual size in bytes for proper cache sizing
-        return self._data.nbytes
+        return len(self._data)
 
     def __hash__(self):
         return hash(self._data.tobytes())
