@@ -11,6 +11,7 @@ from time import sleep
 
 from cachetools import LRUCache
 import numpy as np
+from memalot.api import start_leak_monitoring
 
 class DataHolder:
     def __init__(self, data: np.ndarray):
@@ -29,6 +30,11 @@ def create_data(key: int, cache: LRUCache):
     cache[key] = holder
 
 def main():
+    # Start Memalot time-based monitoring
+    # Objects should live for no more than 4 seconds (2 iterations)
+    # Set max_object_lifetime to 4 seconds and warmup to 4 seconds
+    start_leak_monitoring(max_object_lifetime=4.0, warmup_time=4.0)
+    
     cache = LRUCache(maxsize=5000, getsizeof=lambda x: len(x))
     for key in range(30):
         create_data(key, cache)
