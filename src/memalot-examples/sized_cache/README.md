@@ -4,7 +4,7 @@ This is a simple example of a memory leak involving a size-limited cache, for us
 
 An AI tool should be able to instrument this code using Memalot, analyse the leak report via the Memalot MCP server, and fix the memory leak. For example, [this PR](https://github.com/nfergu/memalot_examples/pull/5) was created by Github Copilot by following this process.
 
-To get an AI agent to fix this memory leak:
+To get an AI tool to fix this memory leak:
 
 1. Clone the [memalot_examples repo](https://github.com/nfergu/memalot_examples), or fork it if you're using an AI tool that connects to Github.  
 2. Give your AI tool access to the [Memalot MCP Server](https://pypi.org/project/memalot/#mcp-server).
