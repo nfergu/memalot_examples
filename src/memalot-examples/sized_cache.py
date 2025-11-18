@@ -11,27 +11,34 @@ from time import sleep
 
 from cachetools import LRUCache
 import numpy as np
+from memalot.api import leak_monitor
 
 class DataHolder:
     def __init__(self, data: np.ndarray):
         self._data = data
+        self._hash = None  # Cache the hash value
 
     def __len__(self):
         # Return the actual size in bytes for proper cache sizing
-        return len(self._data)
+        return self._data.nbytes
 
     def __hash__(self):
-        return hash(self._data.tobytes())
+        if self._hash is None:
+            self._hash = hash(self._data.tobytes())
+        return self._hash
 
-def create_data(key: int, cache: LRUCache):
-    # Create a random numpy array of size 4906 bytes and store it in the cache
+# Global cache to avoid passing it as a parameter to the monitored function
+cache = LRUCache(maxsize=5000, getsizeof=lambda x: len(x))
+
+@leak_monitor(warmup_calls=2, min_object_age_calls=2)
+def create_data(key: int):
+    # Create a random numpy array of size 4096 bytes and store it in the cache
     holder = DataHolder(np.random.randint(0, 256, size=(1, 4096), dtype=np.uint8))
     cache[key] = holder
 
 def main():
-    cache = LRUCache(maxsize=5000, getsizeof=lambda x: len(x))
     for key in range(30):
-        create_data(key, cache)
+        create_data(key)
         print(f"Cached data with key {key} and hash {hash(cache[key])}")
         sleep(2.0)
 
