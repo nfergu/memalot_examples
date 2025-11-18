@@ -1,8 +1,8 @@
 # Sized Cache Example
 
-This is an example of a memory leak involving a size-limited cache.
+This is a simple example of a memory leak involving a size-limited cache, for use with [Memalot](https://pypi.org/project/memalot/).
 
-An AI tool should be able to instrument this code, analyse the leak report via MCP, and fix the memory leak. For example, [this PR](https://github.com/nfergu/memalot_examples/pull/5) was created by Github Copilot by following this process.
+An AI tool should be able to instrument this code using Memalot, analyse the leak report via the Memalot MCP server, and fix the memory leak. For example, [this PR](https://github.com/nfergu/memalot_examples/pull/5) was created by Github Copilot by following this process.
 
 To get an AI agent to fix this memory leak:
 
